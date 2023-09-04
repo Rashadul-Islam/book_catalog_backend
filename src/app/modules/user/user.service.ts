@@ -6,6 +6,8 @@ import { IUserFilterRequest } from './user.interface';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { userSearchableFields } from './user.constants';
 import prisma from '../../../shared/prisma';
+import config from '../../../config';
+import bcrypt from 'bcrypt';
 
 const getAllUser = async (
   filters: IUserFilterRequest,
@@ -94,7 +96,33 @@ const getSingleUser = async (id: string): Promise<Partial<User> | null> => {
   return result;
 };
 
+const updateUser = async (id: string, data: User): Promise<Partial<User>> => {
+  data.password = await bcrypt.hash(
+    data.password,
+    Number(config.bycrypt_salt_rounds)
+  );
+
+  const result = await prisma.user.update({
+    where: {
+      id,
+    },
+    data,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
+  });
+
+  return result;
+};
+
 export const UserService = {
   getAllUser,
   getSingleUser,
+  updateUser,
 };
