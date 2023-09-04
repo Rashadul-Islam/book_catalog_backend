@@ -2,22 +2,22 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import prisma from '../../../shared/prisma';
-import { Category } from '@prisma/client';
+import { Book } from '@prisma/client';
 
-const createCategory = async (data: Category): Promise<Category> => {
-  const result = await prisma.category.create({
+const createBook = async (data: Book): Promise<Book> => {
+  const result = await prisma.book.create({
     data,
   });
 
   return result;
 };
 
-const getAllCategory = async (
+const getAllBook = async (
   options: IPaginationOptions
-): Promise<IGenericResponse<Category[]>> => {
+): Promise<IGenericResponse<Book[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
 
-  const result = await prisma.category.findMany({
+  const result = await prisma.book.findMany({
     skip,
     take: limit,
     orderBy:
@@ -38,24 +38,21 @@ const getAllCategory = async (
   };
 };
 
-const getSingleCategory = async (id: string): Promise<Category | null> => {
-  const result = await prisma.category.findUnique({
+const getSingleBook = async (id: string): Promise<Book | null> => {
+  const result = await prisma.book.findUnique({
     where: {
       id,
-    },
-    include: {
-      books: true,
     },
   });
 
   return result;
 };
 
-const updateCategory = async (
+const updateBook = async (
   id: string,
-  data: Category
-): Promise<Category> => {
-  const result = await prisma.category.update({
+  data: Book
+): Promise<Book> => {
+  const result = await prisma.book.update({
     where: { id },
     data,
   });
@@ -63,8 +60,8 @@ const updateCategory = async (
   return result;
 };
 
-const deleteCategory = async (id: string): Promise<Category> => {
-  const result = await prisma.category.delete({
+const deleteBook = async (id: string): Promise<Book> => {
+  const result = await prisma.book.delete({
     where: {
       id,
     },
@@ -73,10 +70,10 @@ const deleteCategory = async (id: string): Promise<Category> => {
   return result;
 };
 
-export const CategoryService = {
-  createCategory,
-  getAllCategory,
-  getSingleCategory,
-  updateCategory,
-  deleteCategory,
+export const BookService = {
+  createBook,
+  getAllBook,
+  getSingleBook,
+  updateBook,
+  deleteBook,
 };
