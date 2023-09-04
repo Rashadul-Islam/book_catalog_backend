@@ -10,7 +10,7 @@ import prisma from '../../../shared/prisma';
 const getAllUser = async (
   filters: IUserFilterRequest,
   options: IPaginationOptions
-): Promise<IGenericResponse<User[]>> => {
+): Promise<IGenericResponse<Partial<User>[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filterData } = filters;
 
@@ -44,6 +44,15 @@ const getAllUser = async (
 
   const result = await prisma.user.findMany({
     where: whereConditions,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
     skip,
     take: limit,
     orderBy:
@@ -66,6 +75,26 @@ const getAllUser = async (
   };
 };
 
+const getSingleUser = async (id: string): Promise<Partial<User> | null> => {
+  const result = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
+  });
+
+  return result;
+};
+
 export const UserService = {
   getAllUser,
+  getSingleUser,
 };

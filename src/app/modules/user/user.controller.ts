@@ -15,11 +15,23 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User created successfully!',
+    message: 'Users retrieved successfully!',
+    data: result,
+  });
+});
+
+const getSingleUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.getSingleUser(req.params.id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User fetched successfully!',
     data: result,
   });
 });
 
 export const USerController = {
   getAllUser,
+  getSingleUser,
 };
