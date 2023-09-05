@@ -1,8 +1,8 @@
 export type IPaginationOptions = {
   page?: number;
-  limit?: number;
+  size?: number;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 };
 
-export const paginationCondition = ['limit', 'page', 'sortBy', 'sortOrder'];
+export const paginationCondition = ['size', 'page', 'sortBy', 'sortOrder'];

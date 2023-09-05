@@ -13,16 +13,16 @@ const getAllUser = async (
   filters: IUserFilterRequest,
   options: IPaginationOptions
 ): Promise<IGenericResponse<Partial<User>[]>> => {
-  const { limit, page, skip } = paginationHelpers.calculatePagination(options);
-  const { searchTerm, ...filterData } = filters;
+  const { size, page, skip } = paginationHelpers.calculatePagination(options);
+  const { search, ...filterData } = filters;
 
   const andConditions = [];
 
-  if (searchTerm) {
+  if (search) {
     andConditions.push({
       OR: userSearchableFields.map(field => ({
         [field]: {
-          contains: searchTerm,
+          contains: search,
           mode: 'insensitive',
         },
       })),
@@ -56,7 +56,7 @@ const getAllUser = async (
       profileImg: true,
     },
     skip,
-    take: limit,
+    take: size,
     orderBy:
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
@@ -71,7 +71,7 @@ const getAllUser = async (
     meta: {
       total,
       page,
-      limit,
+      size,
     },
     data: result,
   };

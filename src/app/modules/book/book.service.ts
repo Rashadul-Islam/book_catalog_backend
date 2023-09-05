@@ -15,11 +15,11 @@ const createBook = async (data: Book): Promise<Book> => {
 const getAllBook = async (
   options: IPaginationOptions
 ): Promise<IGenericResponse<Book[]>> => {
-  const { limit, page, skip } = paginationHelpers.calculatePagination(options);
+  const { size, page, skip } = paginationHelpers.calculatePagination(options);
 
   const result = await prisma.book.findMany({
     skip,
-    take: limit,
+    take: size,
     orderBy:
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
@@ -32,7 +32,7 @@ const getAllBook = async (
     meta: {
       total,
       page,
-      limit,
+      size,
     },
     data: result,
   };

@@ -15,11 +15,11 @@ const createCategory = async (data: Category): Promise<Category> => {
 const getAllCategory = async (
   options: IPaginationOptions
 ): Promise<IGenericResponse<Category[]>> => {
-  const { limit, page, skip } = paginationHelpers.calculatePagination(options);
+  const { size, page, skip } = paginationHelpers.calculatePagination(options);
 
   const result = await prisma.category.findMany({
     skip,
-    take: limit,
+    take: size,
     orderBy:
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
@@ -32,7 +32,7 @@ const getAllCategory = async (
     meta: {
       total,
       page,
-      limit,
+      size,
     },
     data: result,
   };
