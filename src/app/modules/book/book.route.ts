@@ -18,6 +18,8 @@ router.get('/', BookController.getAllBook);
 
 router.get('/:id', BookController.getSingleBook);
 
+router.get('/:id/category', BookController.bookByCategoryId);
+
 router.patch(
   '/:id',
   validateRequest(BookValidation.updateBookZodSchema),
@@ -25,10 +27,6 @@ router.patch(
   BookController.updateBook
 );
 
-router.delete(
-  '/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
-  BookController.deleteBook
-);
+router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), BookController.deleteBook);
 
 export const BookRoutes = router;
