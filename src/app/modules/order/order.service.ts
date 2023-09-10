@@ -19,7 +19,7 @@ const createOrder = async (
         },
       });
 
-      const updatedOrder = orderData?.map(item => {
+      const updatedOrder = await orderData?.map(item => {
         return {
           ...item,
           orderId: placeOrder?.id,
