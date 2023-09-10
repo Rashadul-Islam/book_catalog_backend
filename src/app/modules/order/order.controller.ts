@@ -20,7 +20,7 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
 
 const getAllOrder = catchAsync(async (req: Request, res: Response) => {
   const options = pick(req.query, paginationCondition);
-  const result = await orderService.getAllOrder(options,req?.user);
+  const result = await orderService.getAllOrder(options, req?.user);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -30,7 +30,19 @@ const getAllOrder = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getSingleOrder = catchAsync(async (req: Request, res: Response) => {
+  const result = await orderService.getSingleOrder(req?.user, req?.params?.id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Order retrieved successfully!',
+    data: result,
+  });
+});
+
 export const OrderController = {
   createOrder,
   getAllOrder,
+  getSingleOrder,
 };
